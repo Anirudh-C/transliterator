@@ -1,5 +1,6 @@
 import json
 
+# Load mapping dicts
 with open('data/consonants.json') as json_file:
     consonantDict = json.load(json_file)
 
@@ -10,17 +11,28 @@ with open('data/matras.json') as json_file:
     matraDict = json.load(json_file)
 
 class Consonant:
+    """
+    Represents a consonant token
+    :attr: char - English representation of the token
+    :attr: half (False) - Flag to print the token as a half consonant
+    """
     def __init__(self, char, half=False):
         self.char = char
         self.half = half
 
     def toggle(self):
+        """
+        Toggle the flag half
+        """
         if self.half:
             self.half = False
         else:
             self.half = True
 
     def getChar(self):
+        """
+        Return char
+        """
         return self.char
 
     def __str__(self):
@@ -29,17 +41,28 @@ class Consonant:
         return consonantDict[self.char]
 
 class Vowel:
+    """
+    Represents a vowel token
+    :attr: char - English representation of the token
+    :attr: matra (True) - Flag to print the token as a matra
+    """
     def __init__(self, char, matra=True):
         self.char = char
         self.matra = matra
 
     def toggle(self):
+        """
+        Toggle the flag matra
+        """
         if self.matra:
             self.matra = False
         else:
             self.matra = True
 
     def getChar(self):
+        """
+        Return char
+        """
         return self.char
 
     def __str__(self):
