@@ -10,7 +10,7 @@ with open('data/vowels.json') as json_file:
 with open('data/matras.json') as json_file:
     matraDict = json.load(json_file)
 
-class Consonant:
+class EHConsonant:
     """
     Represents a consonant token
     :attr: char - English representation of the token
@@ -40,7 +40,7 @@ class Consonant:
             return consonantDict[self.char] + "\u094d"
         return consonantDict[self.char]
 
-class Vowel:
+class EHVowel:
     """
     Represents a vowel token
     :attr: char - English representation of the token
@@ -71,11 +71,11 @@ class Vowel:
         return vowelDict[self.char]
 
 if __name__=="__main__":
-    c = Consonant("k")
+    c = EHConsonant("k")
     print("Consonant", c.getChar(), "without half", c)
     c.toggle()
     print("Consonant", c.getChar(), "without half", c)
-    v = Vowel("a")
+    v = EHVowel("a")
     print("Vowel", v.getChar(), "as matra", v)
     v.toggle()
     print("Vowel", v.getChar(), "as vowel", v)
