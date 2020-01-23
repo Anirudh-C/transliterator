@@ -3,7 +3,7 @@ from token import EHConsonant, EHVowel,HRConsonant,HRVowel
 from functools import reduce
 
 class EHParser:
-    def __init__(self, maximalMap):
+    def __init__(self, maximalMap=3):
         self.maximalMap = maximalMap
 
     def vowelToggle(self, tokenList):
@@ -142,8 +142,14 @@ class HRParser:
 if __name__=="__main__":
     import sys
     args = sys.argv[1:]
-    if(len(args) == 1):
-        parser = HRParser()
-        print("The transliteration of", args[0], "is", parser.parse(args[0]))
+    if(len(args) == 2):
+        if(args[0] == "Hindi"):
+            parser = EHParser()
+            print("The transliteration of", args[1], "is", parser.parse(args[1]))
+        elif(args[0] == "Roman"):
+            parser = HRParser()
+            print("The transliteration of", args[1], "is", parser.parse(args[1]))
+        else:
+            print("Usage: python3 transliterator.py <Roman|Hindi> <word>")
     else:
-        print("Usage: python3 transliterator.py <word>")
+        print("Usage: python3 transliterator.py <Roman|Hindi> <word>")
