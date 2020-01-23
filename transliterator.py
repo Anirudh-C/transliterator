@@ -1,5 +1,5 @@
 import json
-from token import EHConsonant, EHVowel
+from token import EHConsonant, EHVowel,HRConsonant,HRVowel
 from functools import reduce
 
 class EHParser:
@@ -75,11 +75,75 @@ class EHParser:
         tokenList = self.vowelToggle(self.consonantToggle(self.genTokenList(inputStr)))
         return reduce(lambda x,y: str(x)+str(y), tokenList)
 
+class HRParser:
+    def __init__(self, maximalMap=1):
+        self.maximalMap = maximalMap
+
+    def consonantToggle(self, tokenList):
+        """
+        Modifies the consonants in :tokenList: to print as a half character
+        iff the next token is also a consonant. All other consonants
+        are printed as full characters.
+        """
+        for i in range(len(tokenList)):
+            if (i == len(tokenList) - 1 and isinstance(tokenList[i], HRConsonant)) or \
+               (i != len(tokenList) - 1 and isinstance(tokenList[i], HRConsonant) and \
+                tokenList[i + 1].getChar()== "\u094d"):
+                tokenList[i].toggle()
+
+        return tokenList
+
+    def genToken(self, inputStr):
+        """
+        Generate maximal character from mapping jsons
+        """
+        # Load mapping dicts
+        with open('data/romanconsonants.json') as json_file:
+            HRconsonantDict = json.load(json_file)
+
+        with open('data/romanvowels.json') as json_file:
+            HRvowelDict = json.load(json_file)
+
+        with open('data/romanmatras.json') as json_file:
+            HRmatraDict = json.load(json_file)
+
+        index = len(inputStr)
+        while(index > 0):
+            key = inputStr[:index]
+            if key in HRconsonantDict:
+                return HRConsonant(key)
+            elif key in HRvowelDict:
+                return HRVowel(key)
+            elif key in HRmatraDict:
+                return HRVowel(key)
+            else:
+                index -= 1
+
+    def genTokenList(self, inputStr):
+        """
+        Returns the generated token list after parsing :inputStr:
+        """
+        index = 0
+        tokenList = []
+        while(index < len(inputStr)):
+            t = self.genToken(inputStr[index:index+self.maximalMap])
+            tokenList.append(t)
+            index = index + len(t.getChar())
+        return tokenList
+
+    def parse(self, inputStr):
+        """
+        Parses the inputStr and returns a unicode string of the
+        transliterated string.
+        """
+        tokenList = self.consonantToggle(self.genTokenList(inputStr))
+        return reduce(lambda x,y: str(x)+str(y), tokenList)
+
 if __name__=="__main__":
     import sys
     args = sys.argv[1:]
     if(len(args) == 1):
-        parser = EHParser(3)
+        parser = HRParser()
         print("The transliteration of", args[0], "is", parser.parse(args[0]))
     else:
         print("Usage: python3 transliterator.py <word>")
