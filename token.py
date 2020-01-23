@@ -69,13 +69,23 @@ class EHVowel:
         if(self.matra):
             return matraDict[self.char]
         return vowelDict[self.char]
+
+with open("data/romanconsonants.json") as json_file:
+    rconsonantDict = json.load(json_file)
+
+with open("data/romanvowels.json") as json_file:
+    rvowelDict = json.load(json_file)
+
+with open("data/romanmatras.json") as json_file:
+    rmatraDict = json.load(json_file)
+
 class HRConsonant:
     """
     Represents a consonant token
     :attr: char - Roman representation of the token
     :attr: half (False) - Flag to print the token as a half consonant
     """
-    def __init__(self, char, half=False):
+    def __init__(self, char, half=True):
         self.char = char
         self.half = half
 
@@ -96,8 +106,8 @@ class HRConsonant:
 
     def __str__(self):
         if(self.half):
-            return consonantDict[self.char] 
-        return consonantDict[self.char]+ "\u0061"
+            return rconsonantDict[self.char]
+        return rconsonantDict[self.char]+ "a"
 
 class HRVowel:
     """
@@ -114,8 +124,9 @@ class HRVowel:
         return self.char
 
     def __str__(self):
-
-        return vowelDict[self.char]
+        if self.char in rvowelDict:
+            return rvowelDict[self.char]
+        return rmatraDict[self.char]
 
 
 if __name__=="__main__":

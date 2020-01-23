@@ -86,9 +86,8 @@ class HRParser:
         are printed as full characters.
         """
         for i in range(len(tokenList)):
-            if (i == len(tokenList) - 1 and isinstance(tokenList[i], HRConsonant)) or \
-               (i != len(tokenList) - 1 and isinstance(tokenList[i], HRConsonant) and \
-                tokenList[i + 1].getChar()== "\u094d"):
+            if ((i != len(tokenList) - 1 and isinstance(tokenList[i], HRConsonant) and isinstance(tokenList[i+1], HRConsonant)) or \
+                (i == len(tokenList) - 1 and isinstance(tokenList[i], HRConsonant))):
                 tokenList[i].toggle()
 
         return tokenList
