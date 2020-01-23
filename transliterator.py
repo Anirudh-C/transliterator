@@ -1,3 +1,4 @@
+import json
 from token import Consonant, Vowel
 from functools import reduce
 
@@ -28,11 +29,38 @@ def consonantToggle(tokenList):
 
     return tokenList
 
-def genTokenList(inputStr):
+def genToken(inputStr):
+    """
+    Generate maximal character from mapping jsons
+    """
+    # Load mapping dicts
+    with open('data/consonants.json') as json_file:
+        consonantDict = json.load(json_file)
+
+    with open('data/vowels.json') as json_file:
+        vowelDict = json.load(json_file)
+
+    index = len(inputStr)
+    while(index > 0):
+        key = inputStr[:index]
+        if key in consonantDict:
+            return Consonant(key)
+        elif key in vowelDict:
+            return Vowel(key)
+        else:
+            index -= 1
+
+def genTokenList(inputStr, maximalMap=4):
     """
     Returns the generated token list after parsing :inputStr:
     """
-    return []
+    index = 0
+    tokenList = []
+    while(index < len(inputStr)):
+        t = genToken(inputStr[index:index+maximalMap])
+        tokenList.append(t)
+        index = index + len(t.getChar())
+    return tokenList
 
 def parse(inputStr):
     """
@@ -43,4 +71,9 @@ def parse(inputStr):
     return reduce(lambda x,y: str(x)+str(y), tokenList)
 
 if __name__=="__main__":
-    pass
+    import sys
+    args = sys.argv[1:]
+    if(len(args) == 1):
+        print("The transliteration of", args[0], "is", parse(args[0]))
+    else:
+        print("Usage: python3 transliterator.py <word>")
