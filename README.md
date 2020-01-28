@@ -11,3 +11,7 @@ for Hindi to Romanized Hindi and the rest are the mappings from English to Hindi
 - To transliterate from Hindi to Romanized Hindi
   `python3 transliterate.py Roman <word>`
   where, `<word>` is the string in Hindi
+## Team
+- Anirudh C (IMT2017006)
+- Bishal Pandia (IMT2017010)
+- Ananth Shreekumar (IMT2016129)
